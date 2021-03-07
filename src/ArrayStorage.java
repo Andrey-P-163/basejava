@@ -4,7 +4,7 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    int count;
+    private int count;
     Resume[] storage = new Resume[10000];
 
     void clear() {
@@ -13,7 +13,7 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        if (size() <= storage.length) {
+        if (count < storage.length) {
             storage[count] = r;
             count++;
         } else {
@@ -22,29 +22,21 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        try {
-            for (Resume resume : storage) {
-                if (uuid.equals((resume.uuid))) {
-                    return resume;
-                }
+        for (int i = 0; i < count; i++) {
+            if (uuid.equals(storage[i].uuid)) {
+                return storage[i];
             }
-        } catch (NullPointerException e) {
-            return null;
         }
         return null;
     }
 
     void delete(String uuid) {
-        try {
-            for (int i = 0; i <= size(); i++) {
-                if (uuid.equals(storage[i].uuid)) {
-                    System.arraycopy(storage, i + 1, storage, i, size() - i);
-                    count--;
-                    break;
-                }
+        for (int i = 0; i < count; i++) {
+            if (uuid.equals(storage[i].uuid)) {
+                System.arraycopy(storage, i + 1, storage, i, count - i);
+                count--;
+                break;
             }
-        } catch (NullPointerException e) {
-            System.out.println("Указанное резюме отсутсвует.");
         }
     }
 
@@ -56,6 +48,6 @@ public class ArrayStorage {
     }
 
     int size() {
-        return Arrays.copyOf(storage, count).length;
+        return count;
     }
 }
