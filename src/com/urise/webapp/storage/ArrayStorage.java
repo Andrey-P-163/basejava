@@ -9,27 +9,25 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     private int count;
-    private final Resume[] storage = new Resume[10000];
+    private final Resume[] storage = new Resume[10_000];
 
     public void clear() {
         Arrays.fill(storage, 0, count, null);
         count = 0;
     }
 
-    public void save(Resume r) {
+    public void save(Resume resume) {
+        byte forCheck = 0;
         if (count < storage.length) {
-            for (Resume resume : getAll()) {
-                if (r.getUuid().equals(resume.getUuid())) {
+            for (Resume r : getAll()) {
+                if (resume.getUuid().equals(r.getUuid())) {
                     System.out.println("ERROR: Резюме с таким uuid уже внесено в базу.");
-                    break;
-                } else {
-                    storage[count] = r;
-                    count++;
+                    forCheck = 1;
                     break;
                 }
             }
-            if (count == 0) {
-                storage[count] = r;
+            if (forCheck == 0) {
+                storage[count] = resume;
                 count++;
             }
         } else {
@@ -62,10 +60,10 @@ public class ArrayStorage {
         }
     }
 
-    public void update(Resume r) {
-        if (r != null) {
-            for (Resume resume : getAll()) {
-                if (r.equals(resume)) {
+    public void update(Resume resume) {
+        if (resume != null) {
+            for (Resume r : getAll()) {
+                if (resume.equals(r)) {
                     System.out.println("Update" + " " + r);
                 }
             }
