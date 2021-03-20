@@ -9,8 +9,8 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     private int count;
-    private int index;
-    private Resume[] storage = new Resume[10_000];
+    //    private int index;
+    private final Resume[] storage = new Resume[10_000];
 
     public void clear() {
         Arrays.fill(storage, 0, count, null);
@@ -18,14 +18,11 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        byte forCheck = 0;
-        getIndex(resume.getUuid());
+        int index = getIndex(resume.getUuid());
         if (count < storage.length) {
             if (index >= 0) {
                 System.out.println("ERROR: Резюме с uuid = " + resume.getUuid() + " уже внесено в базу.");
-                forCheck = 1;
-            }
-            if (forCheck == 0) {
+            } else {
                 storage[count] = resume;
                 count++;
             }
@@ -35,7 +32,7 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        getIndex(uuid);
+        int index = getIndex(uuid);
         if (index >= 0) {
             return storage[index];
         }
@@ -44,25 +41,23 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        byte forCheck = 0;
-        getIndex(uuid);
+        int index = getIndex(uuid);
         if (index >= 0) {
             System.arraycopy(storage, index + 1, storage, index, count - index - 1);
             count--;
-            forCheck = 1;
-        }
-        if (forCheck == 0) {
+        } else {
             System.out.println("ERROR: Резюме с uuid = " + uuid + " нет базе. Удаление невозможно.");
         }
     }
 
     public void update(Resume resume) {
-        if (resume != null) {
-            if (getIndex(resume.getUuid()) >= 0) {
-                // System.out.println(resume.update());
-                storage[index] = resume;
-            }
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
+            storage[index] = resume;
+        } else {
+            System.out.println("ERROR: Резюме с uuid = " + resume.getUuid() + " не обновлено.");
         }
+
     }
 
     /**
@@ -77,7 +72,7 @@ public class ArrayStorage {
     }
 
     private int getIndex(String uuid) {
-        index = -1;
+        int index = -1;
         for (int i = 0; i < count; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 index = i;
