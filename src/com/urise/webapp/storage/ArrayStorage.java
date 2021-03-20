@@ -9,7 +9,6 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     private int count;
-    //    private int index;
     private final Resume[] storage = new Resume[10_000];
 
     public void clear() {
@@ -57,7 +56,6 @@ public class ArrayStorage {
         } else {
             System.out.println("ERROR: Резюме с uuid = " + resume.getUuid() + " не обновлено.");
         }
-
     }
 
     /**
