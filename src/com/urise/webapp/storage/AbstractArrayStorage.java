@@ -22,7 +22,8 @@ public abstract class AbstractArrayStorage implements Storage {
             if (index >= 0) {
                 System.out.println("ERROR: Резюме с uuid = " + resume.getUuid() + " уже внесено в базу.");
             } else {
-                storage[count] = resume;
+                System.arraycopy(storage, (index * -1 - 1), storage, (index * -1), (count - index - 1));
+                storage[index * -1 - 1] = resume;
                 count++;
             }
         } else {
@@ -33,7 +34,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void delete(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
-            System.arraycopy(storage, index + 1, storage, index, count - index - 1);
+            System.arraycopy(storage, (index + 1), storage, index, (count - index - 1));
             count--;
         } else {
             System.out.println("ERROR: Резюме с uuid = " + uuid + " нет базе. Удаление невозможно.");
