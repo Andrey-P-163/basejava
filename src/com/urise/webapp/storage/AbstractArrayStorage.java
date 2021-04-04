@@ -12,9 +12,23 @@ public abstract class AbstractArrayStorage implements Storage {
     protected static final int STORAGE_LIMIT = 10_000;
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
 
-    public abstract void save(Resume resume);
-
     protected abstract int getIndex(String uuid);
+
+    protected abstract void saveElement(Resume resume, int index, int count);
+
+    public final void save(Resume resume) {
+        int index = getIndex(resume.getUuid());
+        if (count < STORAGE_LIMIT) {
+            if (index >= 0) {
+                System.out.println("ERROR: Резюме с uuid = " + resume.getUuid() + " уже внесено в базу.");
+            } else {
+                saveElement(resume, index, count);
+                count++;
+            }
+        } else {
+            System.out.println("ERROR: Резюме с uuid = " + resume.getUuid() + " не сохранено. В базе нет места для сохранения нового резюме.");
+        }
+    }
 
     public final void delete(String uuid) {
         int index = getIndex(uuid);
