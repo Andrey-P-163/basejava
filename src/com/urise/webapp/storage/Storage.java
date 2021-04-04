@@ -3,7 +3,6 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 public interface Storage {
-
     void save(Resume resume);
 
     void delete(String uuid);
