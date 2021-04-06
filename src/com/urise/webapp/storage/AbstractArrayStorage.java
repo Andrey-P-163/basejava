@@ -14,7 +14,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void saveElement(Resume resume, int index, int count);
+    protected abstract void saveElement(Resume resume, int index);
 
     public final void save(Resume resume) {
         int index = getIndex(resume.getUuid());
@@ -22,7 +22,7 @@ public abstract class AbstractArrayStorage implements Storage {
             if (index >= 0) {
                 System.out.println("ERROR: Резюме с uuid = " + resume.getUuid() + " уже внесено в базу.");
             } else {
-                saveElement(resume, index, count);
+                saveElement(resume, index);
                 count++;
             }
         } else {
@@ -68,6 +68,6 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, count);
+        return Arrays.copyOf(storage, count);
     }
 }
