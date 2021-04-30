@@ -1,5 +1,8 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
+import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -20,13 +23,13 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(resume.getUuid());
         if (count < STORAGE_LIMIT) {
             if (index >= 0) {
-                System.out.println("ERROR: Резюме с uuid = " + resume.getUuid() + " уже внесено в базу.");
+                throw new ExistStorageException(resume.getUuid());
             } else {
                 saveElement(resume, index);
                 count++;
             }
         } else {
-            System.out.println("ERROR: Резюме с uuid = " + resume.getUuid() + " не сохранено. В базе нет места для сохранения нового резюме.");
+            throw new StorageException("Storage overflow", resume.getUuid());
         }
     }
 
@@ -36,7 +39,7 @@ public abstract class AbstractArrayStorage implements Storage {
             System.arraycopy(storage, (index + 1), storage, index, (count - index - 1));
             count--;
         } else {
-            System.out.println("ERROR: Резюме с uuid = " + uuid + " нет базе. Удаление невозможно.");
+            throw new NotExistStorageException(uuid);
         }
     }
 
@@ -45,7 +48,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             storage[index] = resume;
         } else {
-            System.out.println("ERROR: Резюме с uuid = " + resume.getUuid() + " не обновлено.");
+            throw new NotExistStorageException(resume.getUuid());
         }
     }
 
@@ -59,8 +62,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         }
-        System.out.println("ERROR: Резюме с uuid = " + uuid + " нет в базе.");
-        return null;
+        throw new NotExistStorageException(uuid);
     }
 
     public int size() {
