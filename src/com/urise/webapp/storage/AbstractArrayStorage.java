@@ -4,6 +4,7 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+
 import java.util.Arrays;
 
 /**
@@ -21,11 +22,11 @@ public abstract class AbstractArrayStorage implements Storage {
     public final void save(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (count < STORAGE_LIMIT) {
-            if (index >= 0) {
-                throw new ExistStorageException(resume.getUuid());
-            } else {
+            if (index < 0) {
                 saveElement(resume, index);
                 count++;
+            } else {
+                throw new ExistStorageException(resume.getUuid());
             }
         } else {
             throw new StorageException("Storage overflow", resume.getUuid());
