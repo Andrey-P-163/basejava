@@ -11,15 +11,14 @@ import org.junit.Test;
 public abstract class AbstractArrayStorageTest {
     Storage storage;
 
+    private static final Resume resume_1 = new Resume("UUID_1");
+    private static final Resume resume_2 = new Resume("UUID_2");
+    private static final Resume resume_3 = new Resume("UUID_3");
+    private static final Resume resume_4 = new Resume("UUID_4");
+
     AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
-
-    Resume resume_1 = new Resume("UUID_1");
-    Resume resume_2 = new Resume("UUID_2");
-    Resume resume_3 = new Resume("UUID_3");
-    Resume resume_4 = new Resume("UUID_4");
-
     @Before
     public void setUp() throws Exception {
         storage.clear();
