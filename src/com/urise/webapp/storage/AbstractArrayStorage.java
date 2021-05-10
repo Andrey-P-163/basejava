@@ -21,35 +21,32 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public final void save(Resume resume) {
         int index = getIndex(resume.getUuid());
-        if (count < STORAGE_LIMIT) {
-            if (index < 0) {
-                saveElement(resume, index);
-                count++;
-            } else {
-                throw new ExistStorageException(resume.getUuid());
-            }
-        } else {
+        if (count >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         }
+
+        if (index > 0) {
+            throw new ExistStorageException(resume.getUuid());
+        }
+        saveElement(resume, index);
+        count++;
     }
 
     public final void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index >= 0) {
-            System.arraycopy(storage, (index + 1), storage, index, (count - index - 1));
-            count--;
-        } else {
+        if (index < 0) {
             throw new NotExistStorageException(uuid);
         }
+        System.arraycopy(storage, (index + 1), storage, index, (count - index - 1));
+        count--;
     }
 
     public final void update(Resume resume) {
         int index = getIndex(resume.getUuid());
-        if (index >= 0) {
-            storage[index] = resume;
-        } else {
+        if (index < 0) {
             throw new NotExistStorageException(resume.getUuid());
         }
+        storage[index] = resume;
     }
 
     public final void clear() {
@@ -59,10 +56,11 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public final Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index >= 0) {
-            return storage[index];
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
         }
-        throw new NotExistStorageException(uuid);
+
+        return storage[index];
     }
 
     public int size() {
