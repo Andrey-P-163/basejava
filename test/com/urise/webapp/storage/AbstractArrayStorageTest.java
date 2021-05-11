@@ -11,10 +11,22 @@ import org.junit.Test;
 public abstract class AbstractArrayStorageTest {
     Storage storage;
 
-    private static final Resume RESUME_1 = new Resume("UUID_1");
-    private static final Resume RESUME_2 = new Resume("UUID_2");
-    private static final Resume RESUME_3 = new Resume("UUID_3");
-    private static final Resume RESUME_4 = new Resume("UUID_4");
+    private static final String UUID_1 = "uuid_1";
+    private static final String UUID_2 = "uuid_2";
+    private static final String UUID_3 = "uuid_3";
+    private static final String UUID_4 = "uuid_4";
+
+    private static final Resume RESUME_1;
+    private static final Resume RESUME_2;
+    private static final Resume RESUME_3;
+    private static final Resume RESUME_4;
+
+    static {
+        RESUME_1 = new Resume(UUID_1);
+        RESUME_2 = new Resume(UUID_2);
+        RESUME_3 = new Resume(UUID_3);
+        RESUME_4 = new Resume(UUID_4);
+    }
 
     AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
@@ -32,7 +44,7 @@ public abstract class AbstractArrayStorageTest {
     public void save() {
         storage.save(RESUME_4);
         assertEqualsSize(4);
-        assertEqualsResume(RESUME_4,"UUID_4");
+        assertEqualsResume(RESUME_4, "UUID_4");
     }
 
     @Test(expected = ExistStorageException.class)
@@ -44,7 +56,7 @@ public abstract class AbstractArrayStorageTest {
     public void deleteException() {
         storage.delete("UUID_1");
         assertEqualsSize(2);
-        assertEqualsResume(RESUME_1,"UUID_1");
+        assertEqualsResume(RESUME_1, "UUID_1");
     }
 
     @Test
