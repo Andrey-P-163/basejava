@@ -10,13 +10,9 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected int getIndex(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, count, searchKey);
-    }
-
-    @Override
-    protected void saveElement(Resume resume, int index) {
+    protected void saveElement(Resume resume) {
+        Resume searchKey = new Resume(resume.getUuid());
+        int index = Arrays.binarySearch(storage, 0, count, searchKey);
         index = -index - 1;
         System.arraycopy(storage, index, storage, index + 1, count - index);
         storage[index] = resume;
