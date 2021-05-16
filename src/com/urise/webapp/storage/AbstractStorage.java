@@ -6,27 +6,45 @@ import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected int getIndex(Resume[] storage, String uuid, int size) {
-        for (int i = 0; i < size; i++) {
-            if (uuid.equals(storage[i].getUuid())) {
-                return i;
-            }
-        }
-        return -1;
+    protected abstract int getIndex(String uuid);
+
+    protected abstract void setResume(Resume resume);
+
+    protected abstract void removeResume(int index);
+
+    protected abstract void updateResume(int index, Resume resume);
+
+    protected abstract Resume getResume(int index);
+
+    public void save(Resume resume) {
+        checkUuidExist(resume.getUuid());
+        setResume(resume);
     }
 
-//    protected abstract int getIndex(String uuid);
+    public void delete(String uuid) {
+        int index = checkUuidNotExist(uuid);
+        removeResume(index);
+    }
 
-    protected int checkBeforeSaving(Resume[] storage, String uuid, int size) {
-        int index = getIndex(storage, uuid, size);
-        if (index >= 0) {
+    public void update(Resume resume) {
+        int index = checkUuidNotExist(resume.getUuid());
+        updateResume(index, resume);
+    }
+
+    public Resume get(String uuid) {
+        int index = checkUuidNotExist(uuid);
+        return getResume(index);
+    }
+
+    private void checkUuidExist(String uuid) {
+        int index = getIndex(uuid);
+        if (index > 0) {
             throw new ExistStorageException(uuid);
         }
-        return index;
     }
 
-    protected int checkIndex(Resume[] storage, String uuid, int size) {
-        int index = getIndex(storage, uuid, size);
+    private int checkUuidNotExist(String uuid) {
+        int index = getIndex(uuid);
         if (index < 0) {
             throw new NotExistStorageException(uuid);
         }
