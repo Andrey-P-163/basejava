@@ -3,9 +3,10 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    protected final ArrayList<Resume> storageList = new ArrayList<>();
+    protected final List<Resume> storageList = new ArrayList<>();
 
     @Override
     protected int getIndex(String uuid) {
@@ -18,7 +19,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void setResume(Resume resume) {
+    protected void setResume(Resume resume, int index) {
         storageList.add(resume);
     }
 

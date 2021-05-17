@@ -9,7 +9,7 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public abstract class AbstractArrayStorage extends AbstractStorage {
-    protected int count = 0;
+    protected int count;
     protected static final int STORAGE_LIMIT = 10_000;
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
 
@@ -18,11 +18,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void saveElement(Resume resume, int index);
 
     @Override
-    protected void setResume(Resume resume) {
+    protected void setResume(Resume resume, int index) {
         if (count >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         }
-        saveElement(resume, getIndex(resume.getUuid()));
+        saveElement(resume, index);
         count++;
     }
 
