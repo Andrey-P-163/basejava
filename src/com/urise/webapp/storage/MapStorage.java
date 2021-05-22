@@ -2,7 +2,6 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -59,7 +58,6 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        ArrayList<Resume> values = new ArrayList<>(storageMap.values());
-        return values.toArray(new Resume[storageMap.size()]);
+        return storageMap.values().toArray(new Resume[storageMap.size()]);
     }
 }
