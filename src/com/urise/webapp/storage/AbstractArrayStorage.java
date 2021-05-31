@@ -27,7 +27,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void removeResume(int index) {
+    protected void removeResume(int index, String uuid) {
         System.arraycopy(storage, (index + 1), storage, index, (count - index - 1));
         count--;
     }
@@ -44,7 +44,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(int index) {
+    protected Resume getResume(int index, String uuid) {
         return storage[index];
     }
 

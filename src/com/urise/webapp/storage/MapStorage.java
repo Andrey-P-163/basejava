@@ -6,16 +6,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class MapStorage extends AbstractStorage {
-    protected final Map<String, Resume> storageMap = new TreeMap<>();
+    private final Map<String, Resume> storageMap = new TreeMap<>();
 
     @Override
     protected int getIndex(String uuid) {
-        int index = 0;
-        for (Map.Entry<String, Resume> map : storageMap.entrySet()) {
-            if (uuid.equals(map.getKey())) {
-                return index;
-            }
-            index++;
+        if (storageMap.containsKey(uuid)) {
+            return 0;
         }
         return -1;
     }
@@ -26,24 +22,20 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void removeResume(int index) {
-        String key = (String) storageMap.keySet().toArray()[index];
-        storageMap.remove(key);
+    protected void removeResume(int index, String uuid) {
+        storageMap.remove(uuid);
     }
 
     @Override
     protected void updateResume(int index, Resume resume) {
-        for (Map.Entry<String, Resume> map : storageMap.entrySet()) {
-            if (map.getValue().equals(resume)) {
-                storageMap.put(resume.getUuid(), resume);
-            }
+        if (storageMap.containsValue(resume)) {
+            storageMap.put(resume.getUuid(), resume);
         }
     }
 
     @Override
-    protected Resume getResume(int index) {
-        String key = (String) storageMap.keySet().toArray()[index];
-        return storageMap.get(key);
+    protected Resume getResume(int index, String uuid) {
+        return storageMap.get(uuid);
     }
 
     @Override
