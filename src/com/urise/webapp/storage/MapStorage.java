@@ -28,9 +28,7 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void updateResume(Resume resume, Object positionInBase) {
-        if (storageMap.containsValue(resume)) {
-            storageMap.put(resume.getUuid(), resume);
-        }
+        storageMap.put(resume.getUuid(), resume);
     }
 
     @Override
