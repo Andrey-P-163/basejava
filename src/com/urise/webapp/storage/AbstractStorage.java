@@ -6,50 +6,64 @@ import com.urise.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
-    protected abstract int getIndex(String uuid);
+    protected abstract Object getPosition(String uuid);
 
-    protected abstract void setResume(Resume resume, int index);
+    protected abstract void setResume(Resume resume, Object positionInBase);
 
-    protected abstract void removeResume(int index, String uuid);
+    protected abstract void removeResume(Object positionInBase);
 
-    protected abstract void updateResume(int index, Resume resume);
+    protected abstract void updateResume(Resume resume, Object positionInBase);
 
-    protected abstract Resume getResume(int index, String uuid);
+    protected abstract Resume getResume(Object positionInBase);
 
     public void save(Resume resume) {
-        int index = getIndexIfResumeNotExist(resume.getUuid());
-        setResume(resume, index);
+        Object positionInBase = getIndexIfResumeNotExist(resume.getUuid());
+        setResume(resume, positionInBase);
     }
 
     public void delete(String uuid) {
-        int index = checkUuidNotExist(uuid);
-        removeResume(index, uuid);
+        Object positionInBase = checkUuidNotExist(uuid);
+        removeResume(positionInBase);
     }
 
     public void update(Resume resume) {
-        int index = checkUuidNotExist(resume.getUuid());
-        updateResume(index, resume);
+        Object positionInBase = checkUuidNotExist(resume.getUuid());
+        updateResume(resume, positionInBase);
     }
 
     public Resume get(String uuid) {
-        int index = checkUuidNotExist(uuid);
-        return getResume(index, uuid);
+        Object positionInBase = checkUuidNotExist(uuid);
+        return getResume(positionInBase);
     }
 
-    private int getIndexIfResumeNotExist(String uuid) {
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            throw new ExistStorageException(uuid);
+    private Object getIndexIfResumeNotExist(String uuid) {
+        Object positionInBase = getPosition(uuid);
+        if (positionInBase instanceof String) {
+            if (positionInBase.equals(uuid)) {
+                throw new ExistStorageException(uuid);
+            }
+            return positionInBase;
+        } else {
+            if ((int) positionInBase >= 0) {
+                throw new ExistStorageException(uuid);
+            }
+            return positionInBase;
         }
-        return index;
     }
 
-    private int checkUuidNotExist(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
+    private Object checkUuidNotExist(String uuid) {
+        Object positionInBase = getPosition(uuid);
+        if (positionInBase instanceof String) {
+            if (!positionInBase.equals(uuid)) {
+                throw new NotExistStorageException(uuid);
+            }
+            return positionInBase;
+        } else {
+            if ((int) positionInBase < 0) {
+                throw new NotExistStorageException(uuid);
+            }
+            return positionInBase;
         }
-        return index;
     }
 }
 

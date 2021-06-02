@@ -9,33 +9,33 @@ public class MapStorage extends AbstractStorage {
     private final Map<String, Resume> storageMap = new TreeMap<>();
 
     @Override
-    protected int getIndex(String uuid) {
+    protected Object getPosition(String uuid) {
         if (storageMap.containsKey(uuid)) {
-            return 0;
+            return uuid;
         }
-        return -1;
+        return "";
     }
 
     @Override
-    protected void setResume(Resume resume, int index) {
+    protected void setResume(Resume resume, Object positionInBase) {
         storageMap.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void removeResume(int index, String uuid) {
-        storageMap.remove(uuid);
+    protected void removeResume(Object positionInBase) {
+        storageMap.remove((String) positionInBase);
     }
 
     @Override
-    protected void updateResume(int index, Resume resume) {
+    protected void updateResume(Resume resume, Object positionInBase) {
         if (storageMap.containsValue(resume)) {
             storageMap.put(resume.getUuid(), resume);
         }
     }
 
     @Override
-    protected Resume getResume(int index, String uuid) {
-        return storageMap.get(uuid);
+    protected Resume getResume(Object positionInBase) {
+        return storageMap.get((String) positionInBase);
     }
 
     @Override
