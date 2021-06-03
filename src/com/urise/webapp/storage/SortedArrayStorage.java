@@ -10,9 +10,14 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected Object getPosition(String uuid) {
+    protected Object getSearchKey(String uuid) {
         Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, count, searchKey);
+    }
+
+    @Override
+    protected boolean checkSearchKey(Object searchKey, String uuid) {
+        return (int) searchKey >= 0;
     }
 
     @Override

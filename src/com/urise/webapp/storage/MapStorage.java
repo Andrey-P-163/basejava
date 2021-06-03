@@ -9,7 +9,7 @@ public class MapStorage extends AbstractStorage {
     private final Map<String, Resume> storageMap = new TreeMap<>();
 
     @Override
-    protected Object getPosition(String uuid) {
+    protected Object getSearchKey(String uuid) {
         if (storageMap.containsKey(uuid)) {
             return uuid;
         }
@@ -17,23 +17,28 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void setResume(Resume resume, Object positionInBase) {
+    protected void setResume(Resume resume, Object uuid) {
         storageMap.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void removeResume(Object positionInBase) {
-        storageMap.remove((String) positionInBase);
+    protected void removeResume(Object uuid) {
+        storageMap.remove((String) uuid);
     }
 
     @Override
-    protected void updateResume(Resume resume, Object positionInBase) {
+    protected void updateResume(Resume resume, Object uuid) {
         storageMap.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected Resume getResume(Object positionInBase) {
-        return storageMap.get((String) positionInBase);
+    protected Resume getResume(Object uuid) {
+        return storageMap.get((String) uuid);
+    }
+
+    @Override
+    protected boolean checkSearchKey(Object searchKey, String uuid) {
+        return searchKey.equals(uuid);
     }
 
     @Override

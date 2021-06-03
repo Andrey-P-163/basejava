@@ -97,17 +97,15 @@ public abstract class AbstractStorageTest {
     public void getAll() {
         Resume[] actualResumes = storage.getAll();
         Resume[] expectedResumes = {new Resume(UUID_1), new Resume(UUID_2), new Resume(UUID_3)};
-        Assert.assertEquals(actualResumes[0], expectedResumes[0]);
-        Assert.assertEquals(actualResumes[1], expectedResumes[1]);
-        Assert.assertEquals(actualResumes[2], expectedResumes[2]);
+        Assert.assertArrayEquals(actualResumes, expectedResumes);
     }
 
     private void assertEqualsSize(int uuid) {
-        Assert.assertEquals(uuid, storage.size());
+        Assert.assertEquals(storage.size(), uuid);
     }
 
     private void assertEqualsResume(Resume resume, String uuid) {
-        Assert.assertEquals(resume, storage.get(uuid));
+        Assert.assertEquals(storage.get(uuid), resume);
     }
 }
 
