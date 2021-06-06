@@ -16,11 +16,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected boolean checkSearchKey(Object searchKey, String uuid) {
-        return (int) searchKey >= 0;
-    }
-
-    @Override
     protected void saveElement(Resume resume, int index) {
         index = -index - 1;
         System.arraycopy(storage, index, storage, index + 1, count - index);

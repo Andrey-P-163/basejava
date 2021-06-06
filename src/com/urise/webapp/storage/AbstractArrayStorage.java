@@ -55,4 +55,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public Resume[] getAll() {
         return Arrays.copyOf(storage, count);
     }
+
+    @Override
+    protected boolean checkSearchKey(Object searchKey, String uuid) {
+        return (int) searchKey >= 0;
+    }
 }

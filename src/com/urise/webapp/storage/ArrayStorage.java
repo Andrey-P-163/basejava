@@ -18,11 +18,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected boolean checkSearchKey(Object searchKey, String uuid) {
-        return (int) searchKey >= 0;
-    }
-
-    @Override
     protected void saveElement(Resume resume, int index) {
         storage[count] = resume;
     }
